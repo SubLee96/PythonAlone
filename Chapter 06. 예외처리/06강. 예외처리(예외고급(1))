@@ -1,0 +1,156 @@
+PythonAlone
+
+06. 예외처리
+
+: 구문 오류와 예외를 구분한다.
+: 예외 처리하는 방법을 이해한다.
+: 예외를 강제로 발생시키는 방법과 이해한다.
+
+06-2 예외고급(1)
+
+> 처음 프로그램을 개발했을 때 모든 오류를 예측하고 처리하는 경우는 거의 없다.
+> 개발이 완료된 뒤에도 예측하지 못한 오류들이 계속 발생하기 때문에 유지보수를 해줘야 한다.
+
+- 프로그밍 언어도 예외가 바랭하면 예외와 관련된 정보가 생긴다.
+: '예외 객체(exception object)'
+
+[  try:
+		예외가 발생할 가능성이 있는 구문
+   except 예외의 종류 as 예외 객체를 활용할 변수 이름:
+		예외가 발생했을 때 실행할 구문					]
+		
+# 예외 객체
+: 처음 예외 객체를 사용해 보면 '예외의 종류'가 뭔지 몰라 당황하는 경우가 많다.
+-> 예외의 어머니 격인 Exception을 사용한다!!!
+(Exception은 '클래스'이다.)
+
+> 예외 객체
+---------------------------------------------------------------------------
+# try except 구문으로 예외를 처리한다.
+try:
+    # 숫자로 변환한다.
+    number_input_a = int(input("정수 입력> "))
+    # 출력한다.
+    print("원의 반지름:", number_input_a)
+    print("원의 둘레:", 2 * 3.14 * number_input_a)
+    print("원의 넓이:", 3.14 * number_input_a * number_input_a)
+except Exception as exception:
+    # 예외 객체를 출력해본다.
+    print("type(exception):", type(exception))
+    print("exception:", exception)
+
+정수 입력> yes!!
+type(exception): <class 'ValueError'>
+exception: invalid literal for int() with base 10: 'yes!!'
+---------------------------------------------------------------------------
+: 예외가 발생할 경우에 이러한 정보를 메일 등으로 보내도록 해서 수집하면 이후에 프로그램을 개선하는 데 도움이 된다.
+
+# 예외 구분하기
+: 예외 객체를 사용하면 except구문을 if 조건문처럼 사용해서 예외를 구분할 수 있다.
+
+= 여러 가지 예외가 발생할 수 있는 상황
+
+> 여러 가지 예외가 발생할 수 있는 코드
+---------------------------------------------------------------------------
+# 변수를 선언한다.
+list_number = [52, 273, 32, 72, 100]
+
+# try except 구문으로 예외를 처리한다.
+try:
+    # 숫자를 입력받는다.
+    number_input = int(input("정수 입력> "))
+    # 리스트의 요소를 출력한다.
+    print("{}번째 요소: {}".format(number_input, list_number[number_input]))
+except Exception as exception:
+    # 예외 객체를 출력한다.
+    print("type(exception):", type(exception))
+    print("exception:", exception)
+
+1) 정상적으로 정수를 입력한 경우
+정수 입력> 2
+2번째 요소: 32
+
+2) 정수로 변환될 수 없는 값을 입력한 경우
+정수 입력> yes!!
+type(exception): <class 'ValueError'>
+exception: invalid literal for int() with base 10: 'yes!!'
+
+3) 정수를 입력하지만, 리스트의 길이를 넘는 인덱스를 입력한 경우
+정수 입력> 100
+type(exception): <class 'IndexError'>
+exception: list index out of range
+---------------------------------------------------------------------------
+
+= 예외 구분하기
+=====================================================================
+try:
+	예외가 발생할 가능성이 있는 구문
+except 예외의 종류A:
+	예외A가 발생했을 때 실행할 구문
+except 예외의 종류B:
+	예외B가 발생했을 때 실행할 구문
+except 예외의 종류C:
+	예외C가 발생했을 때 실행할 구문
+=====================================================================
+
+> 예외 구분하기
+---------------------------------------------------------------------------
+# 변수를 선언한다.
+list_number = [52, 273, 32, 72, 100]
+
+# try except 구문으로 예외를 처리한다.
+try:
+    # 숫자를 입력받는다.
+    number_input = int(input("정수 입력> "))
+    # 리스트의 요소를 출력한다.
+    print("{}번째 요소: {}".format(number_input, list_number[number_input]))
+except ValueError:
+    # ValueError가 발생하는 경우
+    print("정수를 입력해 주세요!")
+except IndexError:
+    # IndexError가 발생하는 경우
+    print("리스트의 인덱스를 벗어났어요!")
+
+정수 입력> yes!!
+정수를 입력해 주세요!
+
+정수 입력> 100
+리스트의 인덱스를 벗어났어요!
+---------------------------------------------------------------------------
+
+= 예외 구분 구문과 예외 객체
+: 예외를 구분할 때 각각의 except 구문 뒤에 예외 객체를 붙여 활용할 수 있다.
+: 'as 키워드'를 사용하면 된다. 
+
+> 예외 구문과 예외 객체
+---------------------------------------------------------------------------
+# 변수를 선언한다.
+list_number = [52, 273, 32, 72, 100]
+
+# try except 구문으로 예외를 처리한다.
+try:
+    # 숫자를 입력받는다.
+    number_input = int(input("정수 입력> "))
+    # 리스트의 요소를 출력한다.
+    print("{}번째 요소: {}".format(number_input, list_number[number_input]))
+except ValueError as exception:
+    # ValueError가 발생하는 경우
+    print("정수를 입력해 주세요!")
+    print("exception:", exception)
+except IndexError as exception:
+    # IndexError가 발생하는 경우
+    print("리스트의 인덱스를 벗어났어요!")
+    print("exception:", exception)
+
+정수 입력> 2
+2번째 요소: 32
+
+정수 입력> 100
+리스트의 인덱스를 벗어났어요!
+exception: list index out of range
+
+정수 입력> yes!!
+정수를 입력해 주세요!
+exception: invalid literal for int() with base 10: 'yes!!'
+---------------------------------------------------------------------------
+
