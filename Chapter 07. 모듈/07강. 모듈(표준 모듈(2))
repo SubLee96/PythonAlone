@@ -1,0 +1,219 @@
+PythonAlone
+
+07. 모듈
+
+: 모듈의 기본적인 사용 방법을 이해한다.
+: 파이썬의 표준 모듈에는 어떤 것이 있는지 알아본다.
+: 파이썬 표준 문서를 활용해 모듈의 기능을 찾는 방법에 대해 이해한다.
+
+07-1 모듈
+
+# sys 모듈
+: sys모듈 : 시스템과 관련된 정보를 가지고 있는 모듈
+
+> sys 모듈
+---------------------------------------------------------------------------
+# 모듈을 읽어 들인다.
+import sys
+
+# 명령 매개변수를 출력한다.
+print(sys.argv)
+print("---")
+
+# 컴퓨터 환경과 관련된 정보를 출력한다.
+print("getwindowsversion:()", sys.getwindowsversion())
+print("---")
+print("copyright:", sys.copyright)
+print("---")
+print("version:", sys.version)
+
+# 프로그램을 강제로 종료한다.
+sys.exit()
+
+['C:/Users/이윤섭/Desktop/python practice/7단원/7-1/module_sys.py']
+---
+getwindowsversion:() sys.getwindowsversion(major=10, minor=0, build=18362, platform=2, service_pack='')
+---
+copyright: Copyright (c) 2001-2019 Python Software Foundation.
+All Rights Reserved.
+
+Copyright (c) 2000 BeOpen.com.
+All Rights Reserved.
+
+Copyright (c) 1995-2001 Corporation for National Research Initiatives.
+All Rights Reserved.
+
+Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
+All Rights Reserved.
+---
+version: 3.8.1 (tags/v3.8.1:1b293b6, Dec 18 2019, 22:39:24)[MSC v.1916 32 bit (Intel)]
+---------------------------------------------------------------------------
+
+> os 모듈
+: os 모듈 : 운영체제와 관련된 기능을 가진 모듈
+> 새로운 폴더를 만들거나 폴더 내부의 파일 목록을 보는 일도 모두 os 모듈을 활용해서 처리한다.
+
+> os 모듈
+---------------------------------------------------------------------------
+# 모듈을 읽어 들인다.
+import os
+
+# 기본 정보를 몇 개 출력해본다.
+print("현재 운영체제:", os.name)
+print("현재 폴더:", os.getcwd())
+print("현재 폴더 내부의 요소:", os.listdir())
+
+# 폴더를 만들고 제거한다.[폴더가 비어있을 때만 제거 가능].
+os.mkdir("hello")
+os.rmdir("hello")
+
+# 파일을 생성하고 + 파일 이름을 변경한다.
+with open("original.txt", "w") as file:
+    file.write("hello")
+os.rename("original.txt", "new.txt")
+
+# 파일을 제거한다.
+os.remove("new.txt")
+# os.unlink("new.txt")
+
+# 시스템 명령어 실행
+os.system("dir")
+
+현재 운영체제: nt
+현재 폴더: C:\Users\이윤섭\Desktop\python practice\7단원\7-1
+현재 폴더 내부의 요소: ['module_os.py', 'module_random.py', 'module_sys.py']
+---------------------------------------------------------------------------
+
+# datetime 모듈
+: datetime 모듈 : date(날짜), time(시간)과 관련된 모듈로, 날짜 형식을 만들 때 자주 사용되는 코드들로 구성됨.
+
+> datetime 모듈
+---------------------------------------------------------------------------
+# 모듈을 읽어들인다.
+import datetime
+
+# 현재 시각을 구하고 출력하기
+print("# 현재 시각 출력하기")
+now = datetime.datetime.now()
+print(now.year, "년")
+print(now.month, "달")
+print(now.day, "일")
+print(now.hour, "시")
+print(now.minute, "분")
+print(now.second, "초")
+print()
+
+# 시간 출력 방법
+print("# 시간을 포맷에 맞춰 출력하기")
+output_a = now.strftime("%Y.%m.%d %H:%M:%S")
+output_b = "{}년 {}월 {}일 {}시 {}분 {}초".format(now.year,\
+                                            now.month,\
+                                            now.day,\
+                                            now.hour,\
+                                            now.minute,\
+                                            now.second,)
+output_c = now.strftime("%Y.%m.%d %H:%M:%S").format(*"년월일시분초")
+print(output_a)
+print(output_b)
+print(output_c)
+print()
+
+# 현재 시각 출력하기
+2020 년
+2 달
+1 일
+14 시
+52 분
+29 초
+
+# 시간을 포맷에 맞춰 출력하기
+2020.02.01 14:52:29
+2020년 2월 1일 14시 52분 29초
+2020.02.01 14:52:29
+---------------------------------------------------------------------------
+: 한국어 등의 문자는 매개변수에 넣을 수 없다.
+
+> 시간 처리하기
+---------------------------------------------------------------------------
+# 모듈을 읽어들인다.
+import datetime
+now = datetime.datetime.now()
+
+# 특정 시간 이후의 시간 구하기
+print(" # datetime.timedelta로 시간 더하기")
+after = now + datetime.timedelta(\
+    weeks=1,\
+    days=1,\
+    hours=1,\
+    minutes=1,\
+    seconds=1)
+print(after.strftime("%Y{} %m{} %d{} %H{} %M{} %S{}").format(*"년월일시분초"))
+print()
+
+# 특정 시간 요소 교체하기
+print("# now.replace()로 1년 더하기")
+output = now.replace(year=(now.year + 1))
+print(output.strftime("%Y{} %m{} %d{} %H{} %M{} %S{}").format(*"년월일시분초"))
+
+ # datetime.timedelta로 시간 더하기
+2020년 02월 09일 15시 58분 48초
+
+# now.replace()로 1년 더하기
+2021년 02월 01일 14시 57분 47초
+---------------------------------------------------------------------------
+
+> timedelta()함수 : 특정한 시간의 이전 또는 이후를 구한다.
+
+# time
+: time 모듈 : 시간과 관련된 기능을 다룰 경우에 사용한다.
+(time 모듈보다 datetime 모듈을 더 많이 사용한다!)
+
+[  import time  ]
+
+> time 모듈
+---------------------------------------------------------------------------
+import time
+
+print("지금부터 5초 동안 정지합니다!")
+time.sleep(5)
+print("프로그램을 종료합니다.")
+
+지금부터 5초 동안 정지합니다!
+( 5초 동안 버즈 )
+프로그램을 종료합니다.
+---------------------------------------------------------------------------
+
+# urllib 모듈
+: urllib 모듈 : 'URL을 다루는 라이브러리'
+: URL(Uniform Resource Locator) : 네트워크의 자원이 어디에 위치하는지 확인할 때 사용한다.
+> 인터넷 주소를 활용할 때 사용하는 라이브러리이다.
+
+> urllib 모듈
+---------------------------------------------------------------------------
+# 모듈을 읽어 들인다.
+from urllib import request
+
+# urlopen() 함수로 구글의 메인 페이지를 읽는다.
+target = request.urlopen("https://google.com")
+output = target.read()
+
+# 출력한다.
+print(output)
+
+b'<!doctype html><html itemscope="" ...
+...
+...
+...
+...
+</body></html>'
+---------------------------------------------------------------------------
+: 'b'라는 바이너리 데이터(binary data)를 의미하낟.
+
+=====================================================================
+# 4 가지 키워드
+- 표준 모듈 : 파이썬이 기본적으로 제공하는 모듈
+- import 구문 : 모듈을 읽어 들일 때 사용하는 구문
+- as 키워드 : 모듈을 읽어 들이고 별칭을 붙일 때 사용하는 구문
+- 파이썬 문서 : 모듈의 자세한 사용 방법이 들어있는 문서
+=====================================================================
+
