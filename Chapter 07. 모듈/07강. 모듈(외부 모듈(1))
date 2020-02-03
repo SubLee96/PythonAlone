@@ -1,0 +1,160 @@
+PythonAlone
+
+07. 모듈
+
+: 모듈의 기본적인 사용 방법을 이해한다.
+: 파이썬의 표준 모듈에는 어떤 것이 있는지 알아본다.
+: 파이썬 표준 문서를 활용해 모듈의 기능을 찾는 방법에 대해 이해한다.
+
+07-2 외부 모듈
+
+> 외부 모듈(External Module) : 파이썬이 기본적으로 제공해주지 않고, 다른 사람들이 만들어 배포하는 모듈이다.
+ex) BeautifulSoup / Flask
+
+# 모듈 설치하기 
+
+cmd 창에서
+
+[  pip install 모듈 이름  ]
+
+로 작성한다.
+
+> Beautiful Soup 을 입력하면 이런 식으로 나오게 된다!!!
+---------------------------------------------------------------------------
+C:\Users>pip install beautifulsoup4
+Collecting beautifulsoup4
+  Downloading https://files.pythonhosted.org/packages/cb/a1/c698cf319e9cfed6b17376281bd0efc6bfc8465698f54170ef60a485ab5d/beautifulsoup4-4.8.2-py3-none-any.whl (106kB)
+     |████████████████████████████████| 112kB 243kB/s
+Collecting soupsieve>=1.2 (from beautifulsoup4)
+  Downloading https://files.pythonhosted.org/packages/81/94/03c0f04471fc245d08d0a99f7946ac228ca98da4fa75796c507f61e688c2/soupsieve-1.9.5-py2.py3-none-any.whl
+Installing collected packages: soupsieve, beautifulsoup4
+Successfully installed beautifulsoup4-4.8.2 soupsieve-1.9.5
+WARNING: You are using pip version 19.2.3, however version 20.0.2 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' command.
+---------------------------------------------------------------------------
+
+=====================================================================
+# 모듈이 이미 설치되어 있는 경우
+C:\Users\이윤섭>pip install beautifulsoup4
+Requirement already satisfied: beautifulsoup4 in c:\users\user\appdata
+\local\programs\python\python38-32\lib\site-packages
+=====================================================================
+
+: pip은 많은 기능을 가지고 있다.
+: 특정 버전의 모듈을 설치하거나 설치한 모듈을 제거하는 기능 등을 모두 지원한다.
+
+# 모듈 찾아보기
+: Beautiful 모듈은 웹 페이지를 분석할 때 사용하는 모듈이다.
+
+방법 1) 책을 샀는데 책에서 모듈을 추천해 주었다.
+- 웹 프로그래밍 책 : Django / Flask
+- 기계 학습 : scikit-learn / keras
+- 스크레이핑 : requests / Beautiful Soup
+- 영상 분석 : cv2 / pillow(PIL)
+
+방법 2) 파이썬 커뮤니티에 가입했는데, 어떤 모듈이 어떤 분야에서 인기라고 한다.
+- 페이스북 : 수많은 새로운 모듈들을 추천해준다.
+
+방법 3) 어떤 기능이 있는 모듈이 필요해서 구글에서 검색해본다.
+: 무언가를 개발하는 과정에서 필요한 모듈들은 구글에서 검색하는 것이 좋다.
+- MIDI를 조작해서 음악을 만들어 보고 싶다면 Python MIDI로 검색해야 한다.
+
+# BeautifulSoup 모듈
+- 유명한 웹페이지 분석 모듈이다!!!
+
+> BeautifulSoup 모듈로 날씨 가져오기
+---------------------------------------------------------------------------
+# 모듈을 읽어 들인다.
+from urllib import request
+from bs4 import BeautifulSoup
+
+# urlopen()함수로 기상청의 전국 날씨를 읽는다.
+target = request.urlopen("http://www.kma.go.kr/weather/forecast/mid-term-rss3.jsp?stnId=108")
+
+# BeautifulSoup을 사용해 웹 페이지를 분석한다.
+soup = BeautifulSoup(target, "html.parser")
+
+# location 태그를 찾는다.
+for location in soup.select("location"):
+    # 내부의 city, wg, tmn, tmx 태그를 찾아 출력한다.
+    print("도시:", location.select_one("city").string)
+    print("날씨:", location.select_one("wf").string)
+    print("최저기온:", location.select_one("tmn").string)
+    print("최고기온:", location.select_one("tmx").string)
+    print()
+
+도시: 서울
+날씨: 맑음
+최저기온: -10
+최고기온: 1
+
+도시: 인천
+날씨: 맑음
+최저기온: -10
+최고기온: -1
+
+도시: 수원
+날씨: 맑음
+최저기온: -10
+최고기온: 1
+
+...
+
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+<rss version="2.0">
+<channel>
+<title>기상청 육상 중기예보</title>
+<link>
+http://www.kma.go.kr/weather/forecast/mid-term_01.jsp
+</link>
+<description>기상청 날씨 웹서비스</description>
+<language>ko</language>
+<generator>기상청</generator>
+<pubDate>2020년 02월 03일 (월)요일 06:00</pubDate>
+<item>
+<author>기상청</author>
+<category>육상중기예보</category>
+<title>전국 육상 중기예보 - 2020년 02월 03일 (월)요일 06:00 발표</title>
+<link>
+http://www.kma.go.kr/weather/forecast/mid-term_01.jsp
+</link>
+<guid>
+http://www.kma.go.kr/weather/forecast/mid-term_01.jsp
+</guid>
+<description>
+<header>
+<title>전국 육상중기예보</title>
+<tm>202002030600</tm>
+<wf>
+<![CDATA[
+기압골의 영향으로 7일 강원영서에 눈이 오겠고, 12~13일에는 전국에 비가 오겠습니다. 그 밖의 날은 고기압의 영향으로 대체로 맑겠습니다. <br />기온은 7일까지는 평년(최저기온: -10~2℃, 최고기온: 3~10℃)보다 낮겠으나, 8일부터는 높겠습니다.<br />강수량은 평년(0~3mm)보다 많겠습니다.<br /><br />* 6일까지 찬 대륙고기압의 영향으로 기온이 낮아 매우 춥겠으니, 건강관리와 수도관 동파 등 한파 피해가 없도록 각별히 유의하기 바랍니다.
+]]>
+</wf>
+</header>
+<body>
+<location wl_ver="3">
+<province>서울ㆍ인천ㆍ경기도</province>
+<city>서울</city>
+<data>
+...
+---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
