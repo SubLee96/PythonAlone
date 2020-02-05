@@ -1,0 +1,188 @@
+PythonAlone
+
+07. 모듈
+
+: 모듈의 기본적인 사용 방법을 이해한다.
+: 파이썬의 표준 모듈에는 어떤 것이 있는지 알아본다.
+: 파이썬 표준 문서를 활용해 모듈의 기능을 찾는 방법에 대해 이해한다.
+
+# Flask 모듈
+: 파이썬에서 웹 개발할 때 많이 사용한다.
+ex) Django / Flask(작은 기능만을 제공한다.)
+
+[  pip install flask  ]
+
+---------------------------------------------------------------------------
+C:\Users\이윤섭>pip install flask
+Collecting flask
+  Downloading https://files.pythonhosted.org/packages/9b/93/628509b8d5dc749656a9641f4caf13540e2cdec85276964ff8f43bbb1d3b/Flask-1.1.1-py2.py3-none-any.whl (94kB)
+     |████████████████████████████████| 102kB 242kB/s
+Collecting click>=5.1 (from flask)
+  Downloading https://files.pythonhosted.org/packages/fa/37/45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec/Click-7.0-py2.py3-none-any.whl (81kB)
+     |████████████████████████████████| 81kB 1.8MB/s
+Collecting Jinja2>=2.10.1 (from flask)
+  Downloading https://files.pythonhosted.org/packages/27/24/4f35961e5c669e96f6559760042a55b9bcfcdb82b9bdb3c8753dbe042e35/Jinja2-2.11.1-py2.py3-none-any.whl (126kB)
+     |████████████████████████████████| 133kB 3.2MB/s
+Collecting itsdangerous>=0.24 (from flask)
+  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting Werkzeug>=0.15 (from flask)
+  Downloading https://files.pythonhosted.org/packages/c2/e4/a859d2fe516f466642fa5c6054fd9646271f9da26b0cac0d2f37fc858c8f/Werkzeug-0.16.1-py2.py3-none-any.whl (327kB)
+     |████████████████████████████████| 327kB 3.3MB/s
+Collecting MarkupSafe>=0.23 (from Jinja2>=2.10.1->flask)
+  Downloading https://files.pythonhosted.org/packages/93/b8/95b1c38f5b00ed2c0d16cf65f2b07a5ae73eeacf66d2010c0e934737d1d9/MarkupSafe-1.1.1-cp38-cp38-win32.whl
+Installing collected packages: click, MarkupSafe, Jinja2, itsdangerous, Werkzeug, flask
+Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-0.16.1 click-7.0 flask-1.1.1 itsdangerous-1.1.0
+WARNING: You are using pip version 19.2.3, however version 20.0.2 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' command.
+---------------------------------------------------------------------------
+
+> Flask 모듈 사용하기
+---------------------------------------------------------------------------
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "<h1>Hello World!<h1>"
+
+---------------------------------------------------------------------------
+: @app.route() : 데코레이터(decorator)
+
+[  set FLASK_APP = 파일 이름.py
+   flask run					]
+   
+=====================================================================
+# 맥과 리눅스를 사용하고 있는 경우
+export FLASK_APP=파일 이름.py
+flask run
+=====================================================================
+
+> BeautifulSoup 스크레이핑 실행하기
+---------------------------------------------------------------------------
+# 모듈을 읽어 들인다.
+from flask import Flask
+from urllib import request
+from bs4 import BeautifulSoup
+
+# 웹 서버를 생성한다.
+app = Flask(__name__)
+@app.route("/")
+
+def hello():
+    # urlopen() 함수로 기상청의 전국 날씨를 읽는다.
+    target = request.urlopen("http://www.kma.go.kr/weather/forecast/mid-term-rss3.jsp?stnId=108")
+
+    # BeautifulSoup를 사용해 웹 페이지를 분석한다.
+    soup = BeautifulSoup(target, "html.parser")
+
+    # location 태그를 찾는다.
+    output = ""
+    for location in soup.select("location"):
+        # 내부의 city, wf, tmn, tmx 태그를 찾아 출력한다.
+        output += "<h3>{}</h3>".format(location.select_one("city").string)
+        output += "날씨: {}<br/>".format(location.select_one("wf").string)
+        output += "최저/최고 기온: {}/{}"\
+                  .format(\
+                      location.select_one("tmn").string,\
+                      location.select_one("tmx").string\
+                    )
+        output += "<hr/>"
+        return output
+---------------------------------------------------------------------------
+
+# 라이브러리와 프레임워크
+
+=====================================================================
+구분                 설명
+라이브러리(Library)    정상적인 제어를 하는 모듈
+프레임워크(framework)  제어 역전이 발생하는 모듈
+=====================================================================
+
+= 라이브러리
+: 제어 역전 : 쉽게 말해 제어가 역전되어 있다.
+: 라이브러리 : 개발자가 모듈의 기능을 호출하는 형태의 모듈
+
+> 정상적인 제어 = 라이브러리
+---------------------------------------------------------------------------
+# 모듈을 읽어 들인다.
+from math import sin, cos, tan, floor, ceil
+
+# sin, cos, tan를 구한다.
+print("sin(1):", sin(1))
+print("cos(1):", cos(1))
+print("tan(1):", tan(1))
+
+# 내림과 올림을 구한다.
+print("floor(2.5):", floor(2.5))
+print("ceil(2.5):", ceil(2.5))
+
+sin(1): 0.8414709848078965
+cos(1): 0.5403023058681398
+tan(1): 1.5574077246549023
+floor(2.5): 2
+ceil(2.5): 3
+---------------------------------------------------------------------------
+
+= 프레임워크
+
+> 프레임워크
+---------------------------------------------------------------------------
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "<h1>Hello World!</h1>"
+
+---------------------------------------------------------------------------
+
+: 프레임워크 : 모듈이 개발자가 작성한 코드를 실행하는 형태의 모듈
+: 제어역전(IoC, Inverse of Control) : 개발자가 만든 함수를 모듈이 실행하는 것
+
+> 함수 데코레이터
+: 데코레이터(decorator)
+- 함수 데코레이터
+- 클래스 데코레이터
+
+# 함수 데코레이터의 기본
+: 대상 함수의 앞뒤에 꾸밀 부가적인 내용을 혹은 반복할 내용을 데코레이터로 정의해서 손쉽게 사용할 수 있도록 한 것
+
+---------------------------------------------------------------------------
+def hello():
+	print("hello")
+---------------------------------------------------------------------------
+
+> 함수 데코레이터의 기본
+---------------------------------------------------------------------------
+# 함수 데코레이터를 생성한다.
+def test(function):
+    def wrapper():
+        print("인사가 시작되었습니다.")
+        function()
+        print("인사가 종료되었습니다.")
+    return wrapper
+
+# 데코레이터를 붙여 함수를 만든다.
+@test
+def hello():
+    print("hello")
+
+# 함수를 호출한다.
+hello()
+
+인사가 시작되었습니다.
+hello
+인사가 종료되었습니다.
+---------------------------------------------------------------------------
+
+=====================================================================
+# 5가지 키워드로 정리하는 핵심 포인트
+- 외부 모듈(external module) : 파이썬이 기본적으로 제공하지 않는, 다른 사람들이 만들어
+							 제공하는 모듈을 의미
+- pip install : 외부 모듈을 설치할 때 사용하는 명령어
+- 제어 역전(IoC, Inverse of Control) : 개발자가 모듈의 함수를 호출하는 것이 일반적인 제어 흐름이나, 
+									 이와 반대로 개발자가 만든 함수를 모듈이 실행하는 것
+- 라이브러리(library) : 개발자가 모듈의 기능을 호출하는 형태와 같이 정상적인 제어를 하는 모듈
+- 프레임워크(framework) : 모듈이 개발자가 작성한 코드를 실행하는 형태의 모듈
+=====================================================================
+
