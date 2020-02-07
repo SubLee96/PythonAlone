@@ -1,0 +1,154 @@
+PythonAlone
+
+07. 모듈
+
+: 모듈의 기본적인 사용 방법을 이해한다.
+: 파이썬의 표준 모듈에는 어떤 것이 있는지 알아본다.
+: 파이썬 표준 문서를 활용해 모듈의 기능을 찾는 방법에 대해 이해한다.
+
+# 모듈 만들기
+
+: 모듈 내부에 변수와 함수 등을 잔뜩 넣어주면 되는데, 간단하게 이전에 만들어 봤던 함수들을 넣어 본다!
+
+> 쉬운 모듈 만들기
+---------------------------------------------------------------------------
+# test_modue.py 파일
+PI = 3.141592
+
+def number_input():
+    output = input("정수 입력> ")
+    return float(output)
+
+def get_circumference(radius):
+    return 2 * PI * radius
+
+def get_circle_area(radius):
+    return PI * radius * radius
+---------------------------------------------------------------------------
+
+> 쉬운 모듈 만들기
+---------------------------------------------------------------------------
+# main.py 파일
+import test_module as test
+
+radius = test.number_input()
+print(test.get_circumference(radius))
+print(test.get_circle_area(radius))
+
+정수 입력> 10
+62.83184
+314.1592
+---------------------------------------------------------------------------
+
+: 복잡하고 구조화된 모듈을 만들 때는 패키지(package)라는 기능을 사용한다!
+
+# __name__ == "__main__"
+
+= __name__
+: 파이썬 코드 내부에서 사용할 수 있는 변수
+
+>>> __name__
+'__main__'
+
+: 프로그램의 진입점 : 엔트리 포인트(entry point) or 메인(main)
+
+= 모듈의 __name__
+: import 되었기에 모듈 내 코드가 실행된다.
+
+> 모듈 이름을 출력하는 모듈 만들기
+---------------------------------------------------------------------------
+# main.py파일
+import test_module02
+
+print("# 메인의 __name__ 출력하기")
+print(__name__)
+print()
+
+---------------------------------------------------------------------------
+
+> 모듈 이름을 출력하는 모듈 만들기
+---------------------------------------------------------------------------
+# test_module2.py
+print("# 모듈의 __name__ 출력하기")
+print(__name__)
+print()
+---------------------------------------------------------------------------
+
+# 모듈의 __name__ 출력하기
+test_module02
+
+# 메인의 __name__ 출력하기
+__main__
+---------------------------------------------------------------------------
+
+= __name__ 활용하기
+
+> 모듈 활용하기
+---------------------------------------------------------------------------
+PI = 3.141592
+
+def number_input():
+    output = input("숫자 입력> ")
+    return float(output)
+
+def get_circumference(radius):
+    return 2 * PI * radius
+
+def get_circle_area(radius):
+    return PI * radius * radius
+
+# 활용 예
+print("get_circumference(10):", get_circumference(10))
+print("get_circle_area(10):", get_circle_area(10))
+
+---------------------------------------------------------------------------
+
+> 모듈 활용하기
+---------------------------------------------------------------------------
+import test_module03 as test
+
+radius = test.number_input()
+print(test.get_circumference(radius))
+print(test.get_circle_area(radius))
+
+get_circumference(10): 62.83184
+get_circle_area(10): 314.1592
+숫자 입력> 10
+62.83184
+314.1592
+---------------------------------------------------------------------------
+
+> 엔트리 포인트를 확인하는 모듈 만들기
+---------------------------------------------------------------------------
+PI = 3.141592
+
+def number_input():
+    output = input("숫자 입력> ")
+    return float(output)
+
+def get_circumference(radius):
+    return 2 * PI * radius
+
+def get_circle_area(radius):
+    return PI * radius * radius
+
+# 활용 예
+if __name__ == "__main__":
+    print("get_circumference(10):", get_circumference(10))
+    print("get_circle_area(10):", get_circle_area(10))
+   
+---------------------------------------------------------------------------
+
+> 엔트리 포인트를 확인하는 모듈 만들기
+---------------------------------------------------------------------------
+import test_module04 as test
+
+radius = test.number_input()
+print(test.get_circumference(radius))
+print(test.get_circle_area(radius))
+
+숫자 입력> 10
+62.83184
+314.1592
+---------------------------------------------------------------------------
+
