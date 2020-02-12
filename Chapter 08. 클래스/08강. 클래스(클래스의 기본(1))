@@ -1,0 +1,150 @@
+PythonAlone
+
+08. 클래스
+
+: 객체 지향 프로그래밍에 대해서 이해한다.
+: 클래스, 인스턴스를 구분한다.
+: 클래스 만드는 방법을 이해한다.
+
+08-1 클래스의 기본
+> 처음 보고 이해하기 어렵다.
+
+> 객체 지향 프로그래밍(Object Oriented Programming) 
+: 객체를 우선으로 생각해서 프로그래밍한다는 의미이다.
+
+: 클래스 기반의 객체 지향 프로그래밍 언어는 '클래스'라는 것을 기반으로 '객체'를 만들고
+  그러한 객체를 우선으로 생ㄱ가해서 프로그래밍하는 것을 이념으로 삼는다.
+
+# 객체
+
+
+=====================================================================
+# 추상화(abstraction)
+: 프로그램에서 필요한 요소만을 사용해서 객체를 표현하는 것
+: 사전적 의미 : 복잡한 자료, 모듈, 시스템 등으로부터 핵심적인 개념 또는 기능을 간추려 내는 것
+=====================================================================
+
+> 딕셔너리로 객체 만들기
+---------------------------------------------------------------------------
+# 학생 리스트를 선언한다.
+students = [
+    { "name": "윤인성", "korean": 87, "math":98, "english": 88, "science": 95},
+    { "name": "연하진", "korean": 92, "math":98, "english": 96, "science": 98},
+    { "name": "구지연", "korean": 76, "math":96, "english": 94, "science": 90},
+    { "name": "나선주", "korean": 98, "math":92, "english": 96, "science": 92},
+    { "name": "윤아린", "korean": 95, "math":98, "english": 98, "science": 98},
+    { "name": "윤명월", "korean": 64, "math":88, "english": 92, "science": 92},
+]
+
+# 학생을 한 명씩 반복한다.
+print("이름", "총점", "평균", sep="\t")
+for student in students:
+    # 점수의 총합과 평균을 구한다.
+    score_sum = student["korean"] + student["math"] + student["english"] + student["science"]
+    score_average = score_sum / 4
+    # 출력한다.
+    print(student["name"], score_sum, score_average, sep="\t")
+
+이름	총점	평균
+윤인성	368	92.0
+연하진	384	96.0
+구지연	356	89.0
+나선주	378	94.5
+윤아린	389	97.25
+윤명월	336	84.0
+---------------------------------------------------------------------------
+
+: 객체 : 여러 가지 속성을 가질 수 있는 대상
+
+> 객체를 만드는 함수(1)
+---------------------------------------------------------------------------
+# 딕셔너리를 리턴하는 함수를 선언한다.
+def create_student(name, korean, math, english, science):
+    return {
+        "name": name,
+        "korean": korean,
+        "math": math,
+        "english": english,
+        "science": science
+    }
+
+# 학생 리스트를 선언한다.
+students = [
+    create_student( "윤인성", 87, 98, 88, 95),
+    create_student( "연하진", 92, 98, 96, 98),
+    create_student( "구지연", 76, 96, 94, 90),
+    create_student( "나선주", 98, 92, 96, 92),
+    create_student( "윤아린", 95, 98, 98, 98),
+    create_student( "윤명월", 64, 88, 92, 92),
+]
+
+# 학생을 한 명씩 반복한다.
+print("이름", "총점", "평균", sep="\t")
+for student in students:
+    # 점수의 총합과 평균을 구한다.
+    score_sum = student["korean"] + student["math"] + student["english"] + student["science"]
+    score_average = score_sum / 4
+    # 출력한다.
+    print(student["name"], score_sum, score_average, sep="\t")
+
+이름	총점	평균
+윤인성	368	92.0
+연하진	384	96.0
+구지연	356	89.0
+나선주	378	94.5
+윤아린	389	97.25
+윤명월	336	84.0
+---------------------------------------------------------------------------
+
+> 객체를 처리하는 함수(2)
+---------------------------------------------------------------------------
+# 딕셔너리를 리턴하는 함수를 선언한다.
+def create_student(name, korean, math, english, science):
+    return {
+        "name": name,
+        "korean": korean,
+        "math": math,
+        "english": english,
+        "science": science
+    }
+
+# 학생을 처리하는 함수를 선언한다.
+def student_get_sum(student):
+    return student["korean"] + student["math"] + student["english"] + student["science"]
+
+def student_get_average(student):
+    return student_get_sum(student) / 4
+
+def student_to_string(student):
+    return "{}\t{}\t{}".format(
+        student["name"],
+        student_get_sum(student),
+        student_get_average(student))
+
+# 학생 리스트를 선언한다.
+students = [
+    create_student( "윤인성", 87, 98, 88, 95),
+    create_student( "연하진", 92, 98, 96, 98),
+    create_student( "구지연", 76, 96, 94, 90),
+    create_student( "나선주", 98, 92, 96, 92),
+    create_student( "윤아린", 95, 98, 98, 98),
+    create_student( "윤명월", 64, 88, 92, 92),
+]
+
+# 학생을 한 명씩 반복한다.
+print("이름", "총점", "평균", sep="\t")
+for student in students:
+    # 출력한다.
+    print(student_to_string(student))
+
+이름	총점	평균
+윤인성	368	92.0
+연하진	384	96.0
+구지연	356	89.0
+나선주	378	94.5
+윤아린	389	97.25
+윤명월	336	84.0
+---------------------------------------------------------------------------
+
+: 코드가 너무 자주 사용되게 되어 '클래스'라는 구조를 만들게 되었다.
+
